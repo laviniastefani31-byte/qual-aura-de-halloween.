@@ -1,0 +1,22 @@
+QUAL AURA DE HALLOWEEN — ALÉM DA PÁGINA
+
+1. Extraia a pasta.
+2. Abra a pasta no VS Code.
+3. Abra o terminal NESSA pasta.
+4. Rode:
+
+   npm run dev
+
+5. Abra:
+
+   http://localhost:5173
+
+Não precisa npm install.
+Não precisa React.
+Não precisa Vite.
+
+ARQUIVOS DE ARTE:
+- public/assets/fundo-perguntas.png = fundo limpo das perguntas
+- public/assets/auras/ = seis Auras dos resultados
+
+A página inicial e todas as perguntas usam os arquivos da pasta public/assets.

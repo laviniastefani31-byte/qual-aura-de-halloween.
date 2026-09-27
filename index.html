@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5a245b">
+<title>Qual Aura de Halloween você seria? — Além da Página</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito:wght@400;600;700;800&display=swap');
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Nunito,Arial,sans-serif;color:#572343}
+button{font:inherit}
+body{background:#321a45}
+#app{min-height:100vh}
+.site{min-height:100vh;background:#fff7ef}
+.topbar,.quiz-header{text-align:center;padding:22px 16px 10px;background:#fff8f0;border-bottom:1px solid #efd9d8}
+.brand{font-family:"DM Serif Display",Georgia,serif;font-size:28px;color:#64234e}
+.brand-sub{font-size:9px;font-weight:800;letter-spacing:3px;color:#a15d78;margin-top:-3px}
+.home{position:relative;min-height:calc(100vh - 84px);background-image:url("/public/assets/fundo-perguntas.png");background-position:center;background-size:cover;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.home:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(35,10,47,.12),rgba(35,10,47,.38))}
+.home-content{position:relative;z-index:1;width:min(92%,620px);text-align:center;color:white;padding:45px 20px 70px}
+.badge{font-size:11px;font-weight:800;letter-spacing:2px;text-shadow:0 2px 9px #32102f}
+h1{font-family:"DM Serif Display",Georgia,serif}
+.home h1{font-size:clamp(48px,7vw,84px);line-height:.9;margin:16px 0;color:white;text-shadow:0 5px 18px rgba(25,5,30,.65)}
+.home h1 span{color:#ffc27f}
+.home-content p{font-size:18px;margin:20px auto 28px;text-shadow:0 2px 9px rgba(25,5,30,.75)}
+.primary,.secondary{border:0;border-radius:999px;padding:15px 26px;font-weight:800;cursor:pointer;transition:.15s}
+.primary{color:white;background:linear-gradient(135deg,#b44d78,#743b91);box-shadow:0 10px 25px rgba(46,14,52,.3)}
+.secondary{color:#6d315a;background:#fff;border:1px solid #e5cbd5}
+button:hover{transform:translateY(-2px)}
+.home small{display:block;margin-top:14px;color:#ffece0;text-shadow:0 2px 8px #32102f}
+footer{text-align:center;padding:16px;color:#a56c84;background:#fff0e7;font-size:11px;letter-spacing:1px}
+.quiz-main,.result-main{min-height:calc(100vh - 135px);padding:32px 20px 60px;background:url("/public/assets/fundo-perguntas.png") center/cover fixed no-repeat}
+.little-decor{text-align:center;margin-top:12px;font-size:20px}
+.progress-line{width:min(800px,100%);margin:auto;display:flex;justify-content:space-between;font-size:11px;font-weight:800;letter-spacing:1px;color:#9a5872}
+.progress{width:min(800px,100%);height:7px;margin:10px auto 34px;background:#efdde0;border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#c95b7d,#75429a);border-radius:99px}
+.question-card{width:min(800px,100%);margin:auto;padding:34px clamp(18px,5vw,60px);border:1px solid #ead6d7;border-radius:30px;background:rgba(255,250,245,.94);box-shadow:0 18px 45px rgba(95,45,76,.12);text-align:center}
+.question-decor{font-size:22px;margin-bottom:15px}
+.question-card h2{font-size:clamp(28px,4vw,43px);line-height:1.12;margin:0 auto 28px;max-width:700px}
+.answers{display:grid;gap:12px}
+.answer{width:100%;display:flex;align-items:center;gap:14px;text-align:left;padding:15px 16px;border-radius:17px;border:1px solid #e9d4d8;background:#fff9f5;color:#5c3850;cursor:pointer}
+.answer b{display:grid;place-items:center;width:36px;height:36px;flex:0 0 36px;border-radius:50%;background:linear-gradient(135deg,#c75b7d,#77439a);color:#fff}
+.result-main{text-align:center;display:flex;align-items:center;flex-direction:column}
+.result-card{width:min(100%,600px);border-radius:30px;overflow:hidden;margin:8px auto 12px;background:#fff0e7;border:1px solid #ecd5d7;box-shadow:0 18px 45px rgba(95,45,76,.10)}
+.result-card img{display:block;width:100%;height:auto}
+.result-main h1{font-size:clamp(42px,6vw,66px);color:#64234e;margin:10px 0}
+.phrase{font-family:"DM Serif Display",Georgia,serif;color:#a2446a;font-size:22px;max-width:680px;margin:0 auto 14px}
+.description{color:#765267;max-width:680px;line-height:1.6;margin:0 auto 25px}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+@media(max-width:650px){.home{min-height:calc(100vh - 84px)}.home-content{padding-top:30px}.home h1{font-size:50px}.question-card{padding:28px 16px}.result-card{border-radius:20px}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const DATA = {"questions": [["Você encontra uma casa abandonada no meio da floresta. A porta está aberta. O que você faz?", [["Entro. Quero saber o que tem lá dentro.", "bruxa"], ["Nem morta. Dou meia-volta.", "fantasma"], ["Primeiro procuro pistas do lado de fora.", "sombria"], ["Entro, mas preparada para qualquer coisa.", "final"]]], ["Você encontra um livro antigo com uma página marcada. A frase diz: “Não leia em voz alta.”", [["Leio. Agora eu preciso saber o que acontece.", "bruxa"], ["Fecho o livro e finjo que nunca vi.", "zumbi"], ["Tiro uma foto e mando para alguém.", "fantasma"], ["Investigo de onde o livro veio antes de decidir.", "sombria"]]], ["Um monstro aparece no corredor. Qual é sua primeira reação?", [["Procuro alguma coisa para usar como arma.", "final"], ["Tento conversar. Vai que ele só está tendo um dia ruim.", "vampira"], ["Apago a luz e desapareço.", "fantasma"], ["Observo primeiro para descobrir o que ele quer.", "sombria"]]], ["Você precisa escolher uma companhia para passar a noite em uma casa mal-assombrada.", [["Um personagem inteligente que saiba resolver problemas.", "bruxa"], ["Um personagem poderoso que consiga me proteger.", "vampira"], ["Um personagem engraçado para eu não surtar.", "zumbi"], ["Um personagem que já tenha sobrevivido a coisas piores.", "final"]]], ["Você ouve três batidas na janela às 3 da manhã. O que você faz?", [["Olho pela janela. Preciso saber o que é.", "bruxa"], ["Continuo na cama e finjo que não ouvi.", "zumbi"], ["Pego o celular e começo a gravar.", "fantasma"], ["Tranco tudo e preparo uma rota de fuga.", "final"]]], ["Você descobre que uma das pessoas do seu grupo está escondendo um segredo.", [["Pergunto diretamente. Quero a verdade.", "vampira"], ["Observo em silêncio até descobrir sozinha.", "sombria"], ["Deixo para lá. Não quero problemas.", "zumbi"], ["Faço perguntas até a pessoa acabar contando.", "bruxa"]]], ["Qual seria sua arma em uma história de terror?", [["Um livro de magia.", "bruxa"], ["Minha inteligência e um plano de fuga.", "sombria"], ["Uma espada, uma lanterna e coragem.", "final"], ["Nada. Eu provavelmente estaria escondida.", "fantasma"]]], ["No final da noite, você descobre que o verdadeiro perigo sempre esteve dentro da casa.", [["Eu sabia. Algumas coisas simplesmente não me convencem.", "sombria"], ["Eu enfrento o problema e termino isso logo.", "final"], ["Eu só quero ir embora e dormir.", "zumbi"], ["Eu fico curiosa para descobrir a história toda.", "vampira"]]]], "results": {"bruxa": ["Aura Bruxinha", "bruxa.png", "#8d4bc4", "Você mexe com magia, curiosidade e provavelmente com coisas que deveria ter deixado quietas.", "Curiosa, esperta e impossível de convencer a deixar um mistério sem resposta. Se existe um livro amaldiçoado, você provavelmente já está folheando a primeira página."], "vampira": ["Aura Vampira", "vampira.png", "#b43d68", "Elegante, misteriosa e com um talento impressionante para transformar qualquer problema em drama.", "Você mantém a calma quando todo mundo já entrou em pânico. Tem presença, personalidade e provavelmente faria amizade com o vilão antes do terceiro capítulo."], "fantasma": ["Aura Fantasma", "fantasma.png", "#6f72c9", "Você não precisa entrar pela porta. Você simplesmente aparece onde ninguém estava esperando.", "Discreta, imprevisível e ótima em desaparecer quando a situação fica estranha. Você sobreviveria mais por instinto do que por planejamento."], "final": ["Aura Final Girl", "final-girl.png", "#d45a4f", "Todo mundo entrou em pânico. Você respirou fundo, pegou alguma coisa para se defender e continuou.", "Você não pediu para ser a protagonista, mas aparentemente ninguém consultou você. Enquanto todo mundo corre, você pensa em como sair viva."], "zumbi": ["Aura Zumbi", "zumbi.png", "#66855b", "Você não sabe exatamente o que está acontecendo, mas também não tem energia para se importar.", "Cansada, prática e misteriosamente resistente. Se o apocalipse começar amanhã, você talvez só suspire e continue o que estava fazendo."], "sombria": ["Aura Sombria", "sombria.png", "#4f315e", "Talvez você não esteja tentando sobreviver ao Halloween. Talvez o Halloween esteja tentando sobreviver a você.", "Você observa tudo, percebe detalhes que ninguém percebe e nunca conta tudo o que sabe. Existe uma pequena chance de você ser a responsável pelo caos."]}};
+
+let questionIndex=0;
+let scores={};
+
+function home(){
+  document.getElementById("app").innerHTML = `
+  <div class="site">
+    <header class="topbar">
+      <div class="brand">Além da Página</div>
+      <div class="brand-sub">CLUBE DE LEITURA</div>
+    </header>
+    <section class="home">
+      <div class="home-content">
+        <div class="badge">🎃 EDIÇÃO ESPECIAL DE HALLOWEEN</div>
+        <h1>Qual Aura<br><span>de Halloween</span><br>você seria?</h1>
+        <p>Descubra qual versão da Aura combina com você neste Halloween.</p>
+        <button class="primary" onclick="start()">🧙‍♀️ COMEÇAR O QUIZ</button>
+        <small>8 perguntas • 6 resultados • uma Aura esperando por você</small>
+      </div>
+    </section>
+    <footer>🧡 Além da Página • Halloween 2026 🦊</footer>
+  </div>`;
+}
+
+function start(){
+  questionIndex=0;
+  scores={};
+  question();
+}
+
+function question(){
+  const q=DATA.questions[questionIndex];
+  const percent=Math.round((questionIndex/DATA.questions.length)*100);
+  const letters=["A","B","C","D"];
+  document.getElementById("app").innerHTML=`
+  <div class="site">
+    <header class="quiz-header">
+      <div class="brand">Além da Página</div>
+      <div class="brand-sub">CLUBE DE LEITURA</div>
+      <div class="little-decor">🧙‍♀️ ✦ 🦇 🕯️ ✦</div>
+    </header>
+    <main class="quiz-main">
+      <div class="progress-line"><span>PERGUNTA ${questionIndex+1} DE ${DATA.questions.length}</span><span>${percent}%</span></div>
+      <div class="progress"><i style="width:${Math.max(percent,8)}%"></i></div>
+      <section class="question-card">
+        <div class="question-decor">🕸️ ✦ 🕯️</div>
+        <h2>${q[0]}</h2>
+        <div class="answers">
+          ${q[1].map((a,i)=>`<button class="answer" onclick="answer('${a[1]}')"><b>${letters[i]}</b><span>${a[0]}</span></button>`).join("")}
+        </div>
+      </section>
+    </main>
+    <footer>🧡 Além da Página • Halloween 2026 🦊</footer>
+  </div>`;
+}
+
+function answer(type){
+  scores[type]=(scores[type]||0)+1;
+  if(questionIndex<DATA.questions.length-1){
+    questionIndex++;
+    question();
+    return;
+  }
+  let winner="bruxa";
+  Object.keys(DATA.results).forEach(k=>{
+    if((scores[k]||0)>(scores[winner]||0)) winner=k;
+  });
+  result(winner);
+}
+
+function result(key){
+  const r=DATA.results[key];
+  document.getElementById("app").innerHTML=`
+  <div class="site">
+    <header class="quiz-header">
+      <div class="brand">Além da Página</div>
+      <div class="brand-sub">CLUBE DE LEITURA</div>
+    </header>
+    <main class="result-main">
+      <div class="badge" style="color:#a2446a;text-shadow:none">✨ SEU RESULTADO É...</div>
+      <div class="result-card"><img src="/public/assets/auras/${r[1]}" alt="${r[0]}"></div>
+      <h1>${r[0]}</h1>
+      <p class="phrase">“${r[3]}”</p>
+      <p class="description">${r[4]}</p>
+      <div class="actions">
+        <button class="primary" onclick="share('${key}')">📸 COMPARTILHAR MEU RESULTADO</button>
+        <button class="secondary" onclick="start()">↻ FAZER O QUIZ NOVAMENTE</button>
+      </div>
+    </main>
+    <footer>🧡 Além da Página • Halloween 2026 🦊</footer>
+  </div>`;
+}
+
+async function share(key){
+  const name=DATA.results[key][0];
+  const text=`Eu sou ${name}! 🦊🎃 Qual Aura de Halloween você seria? — Além da Página`;
+  if(navigator.share){
+    try{await navigator.share({title:"Qual Aura de Halloween você seria?",text});return}catch(e){}
+  }
+  try{await navigator.clipboard.writeText(text);alert("Resultado copiado! 🧡");}
+  catch(e){alert(text);}
+}
+
+home();
+</script>
+</body>
+</html>

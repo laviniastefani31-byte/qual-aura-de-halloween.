@@ -1,0 +1,8 @@
+{
+  "name": "qual-aura-de-halloween",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "node server.cjs"
+  }
+}
